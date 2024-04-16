@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="takhfifanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="commentID" Type="int" />
+    <Property Name="userID" Type="int" />
+    <Property Name="commentDate" Type="date" />
+    <Property Name="commentText" Type="nvarchar(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'takhfifan.dbo.Keyword' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Keyword">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="productID" Type="nvarchar" MaxLength="50" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="userID" Type="int" />
+    <Property Name="offCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="orderDate" Type="date" />
+    <Property Name="refCodeBank" Type="nvarchar" MaxLength="50" />
+    <Property Name="CodeBank" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Price" Type="nvarchar" MaxLength="50" />
+    <Property Name="startDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="endDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="offPercent" Type="float" />
+    <Property Name="Feature" Type="nvarchar(max)" />
+    <Property Name="useCondition" Type="nvarchar(max)" />
+    <Property Name="responseTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="serviceDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tell" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location" Type="nvarchar" MaxLength="50" />
+    <Property Name="Pic" Type="nvarchar" MaxLength="50" />
+    <Property Name="menuPic" Type="nvarchar" MaxLength="50" />
+    <Property Name="categoryID" Type="int" />
+    <Property Name="cityID" Type="int" />
+  </EntityType>
+  <EntityType Name="Sale">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="orderID" Type="int" Nullable="false" />
+    <Property Name="productID" Type="int" />
+    <Property Name="saleCount" Type="int" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="fName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="lName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Gender" Type="int" />
+  </EntityType>
+  <EntityType Name="userAddress">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="userID" Type="int" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="varbinary" MaxLength="250" />
+    <Property Name="ZipCode" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Comment_Comment">
+    <End Role="User" Type="Self.User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userAddress_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="userAddress" Type="Self.userAddress" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="userAddress">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="takhfifanModelStoreContainer">
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="userAddress" EntityType="Self.userAddress" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Keyword" EntityType="Self.Keyword" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Keyword].[ID] AS [ID], 
+    [Keyword].[productID] AS [productID], 
+    [Keyword].[Title] AS [Title]
+    FROM [dbo].[Keyword] AS [Keyword]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Comment_Comment" Association="Self.FK_Comment_Comment">
+      <End Role="User" EntitySet="User" />
+      <End Role="Comment" EntitySet="Comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userAddress_User" Association="Self.FK_userAddress_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="userAddress" EntitySet="userAddress" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
